@@ -10,29 +10,36 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import prs.domain.vendor.Vendor;
+
 @Entity
 public class Product implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@ManyToOne
 	@JoinColumn(name = "VendorID")
 	private Vendor vendor;
 	@Column(name="partnumber")
+	@JsonProperty("PartNumber")
 	private String partNumber;
+	@JsonProperty("Name")
 	private String name;
+	@JsonProperty("Price")
 	private double price;
+	@JsonProperty("Unit")
 	private String unit;
 	@Column(name="photopath")
+	@JsonProperty("PhotoPath")
 	private String photoPath;
 	
 	public Product() {
 		id = 0;
-		//vendorID = 0;
+		vendor = null;
 		partNumber = "";
 		name = "";
 		price = 0.0;
@@ -56,10 +63,10 @@ public class Product implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Vendor getVendorID() {
+	public Vendor getVendor() {
 		return vendor;
 	}
-	public void setVendorID(Vendor vendor) {
+	public void setVendor(Vendor vendor) {
 		this.vendor = vendor;
 	}
 	public String getPartNumber() {

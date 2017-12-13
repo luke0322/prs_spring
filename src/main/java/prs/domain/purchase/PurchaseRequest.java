@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import prs.domain.lineitem.PurchaseRequestLineItem;
 import prs.domain.status.Status;
 import prs.domain.user.User;
 
@@ -34,7 +35,6 @@ public class PurchaseRequest implements Serializable {
 	private int id;
 	@ManyToOne
 	@JoinColumn(name = "UserID")
-	@Column(name="userid")
 	private User userID; // User user, int userID
 	private String description;
 	private String justification;
@@ -55,10 +55,10 @@ public class PurchaseRequest implements Serializable {
 	private boolean isActive;
 	@ManyToOne
 	@JoinColumn(name ="UpdatedByUser")
-	@Column(name="updatedbyuser")
 	private User updatedByUser = userID;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "PurchaseRequestID")
+	//@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	//changed line 59 12-13-17 to uncomment
+	@JoinColumn(name = "PurchaseRequestID")//lowercase
 	private ArrayList<PurchaseRequestLineItem> prLineItems;
 
 
