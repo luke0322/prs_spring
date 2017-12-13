@@ -24,7 +24,6 @@ public class Product implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "VendorID")
 	private Vendor vendor;
-	@Column(name="partnumber")
 	@JsonProperty("PartNumber")
 	private String partNumber;
 	@JsonProperty("Name")
@@ -33,7 +32,6 @@ public class Product implements Serializable{
 	private double price;
 	@JsonProperty("Unit")
 	private String unit;
-	@Column(name="photopath")
 	@JsonProperty("PhotoPath")
 	private String photoPath;
 	

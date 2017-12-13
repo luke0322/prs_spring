@@ -27,7 +27,7 @@ public class ProductController {
 		//vendor entity is going to transform JSON into instance of Vendor as vendor
 		//if you do not request body, your values will be null
         productRepository.save(product);
-        System.out.println("Vendor saved:  "+product);
+        System.out.println("Product saved:  "+product);
         return product;
 	}
 

@@ -23,12 +23,9 @@ public class User implements Serializable {
 	@Id
 	//@GeneratedValue(strategy = GenerationType.AUTO) commenting this out.IDENTITY
 	private int id;
-	@Column(name="username")
 	private String userName;
 	private String password;
-	@Column(name="firstname")
 	private String firstName;
-	@Column(name="lastname")
 	private String lastName;
 	private String phone;
 	private String email;
@@ -36,9 +33,6 @@ public class User implements Serializable {
 	private boolean reviewer;
 	@Column(name = "isadmin")
 	private boolean admin;
-	@Column(name="datecreated")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-	private Timestamp dateCreated;
 	
 	public User() {
 		userName = "";
@@ -127,19 +121,19 @@ public class User implements Serializable {
 		this.admin = inAdmin;
 	}
 
-	public Timestamp getDate() {
-		return dateCreated;
-	}
-
-	public void setDate(Timestamp date) {
-		this.dateCreated = date;
-	}
+//	public Timestamp getDate() {
+//		return dateCreated;
+//	}
+//
+//	public void setDate(Timestamp date) {
+//		this.dateCreated = date;
+//	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", phoneNumber=" + phone + ", email=" + email + ", reviewer="
-				+ reviewer + ", admin=" + admin + ", createDate= " + dateCreated + "]";
+				+ reviewer + ", admin=" + admin + ", createDate= " /*+ dateCreated*/ + "]";
 	}
 	
 }

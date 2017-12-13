@@ -9,10 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//import java.util.ArrayList;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,19 +35,15 @@ public class PurchaseRequest implements Serializable {
 	private String description;
 	private String justification;
 	//////
-	@Column(name="dateneeded")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
 	private Timestamp dateNeeded;
-	@Column(name="deliverymode")
 	private String deliveryMode;
 	@ManyToOne
 	@JoinColumn(name="statusID")
 	private Status status;
 	private double total;
-	@Column(name="submitteddate")
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
 	private Timestamp submittedDate;
-	@Column(name="isactive")
 	private boolean isActive;
 	@ManyToOne
 	@JoinColumn(name ="UpdatedByUser")
