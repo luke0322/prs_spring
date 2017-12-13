@@ -34,6 +34,16 @@ public class UserController {
         System.out.println("User saved:  "+user);
         return user;
 	}
+	
+//	@PostMapping(path="/Authenticate") // Map ONLY POST Requests, hidden from URL
+//	public @ResponseBody User authenticate(@RequestBody User user) {
+//		//@ResponseBody means the returned Vendor is the response,not a view name
+//		//@RequestBody means it is a parameter from the POST request
+//		//vendor entity is going to transform JSON into instance of Vendor as vendor
+//		//if you do not request body, your values will be null
+//        //User u =  
+//        return ;
+//	}
 
 	@GetMapping(path="/List")
 	public @ResponseBody Iterable<User> getAllUsers() {

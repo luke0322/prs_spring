@@ -4,24 +4,33 @@ package prs.domain.user;
 import java.io.Serializable;
 //import java.time.LocalDate;
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import prs.domain.product.Product;
+import prs.domain.purchase.PurchaseRequest;
 //import javax.persistence.Table;
 @Entity
-//@Table(name="Users")
+@Table(name="user")
 public class User implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO) commenting this out.IDENTITY
+	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private int id;
 	private String userName;
 	private String password;
@@ -33,6 +42,9 @@ public class User implements Serializable {
 	private boolean reviewer;
 	@Column(name = "isadmin")
 	private boolean admin;
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonIgnore //ignores the display of the product list
+	private List<PurchaseRequest> purchaseRequest;
 	
 	public User() {
 		userName = "";
@@ -121,13 +133,13 @@ public class User implements Serializable {
 		this.admin = inAdmin;
 	}
 
-//	public Timestamp getDate() {
-//		return dateCreated;
-//	}
-//
-//	public void setDate(Timestamp date) {
-//		this.dateCreated = date;
-//	}
+	public List<PurchaseRequest> getPurchaseRequest() {
+		return purchaseRequest;
+	}
+
+	public void setPurchaseRequest(List<PurchaseRequest> purchaseRequest) {
+		this.purchaseRequest = purchaseRequest;
+	}
 
 	@Override
 	public String toString() {

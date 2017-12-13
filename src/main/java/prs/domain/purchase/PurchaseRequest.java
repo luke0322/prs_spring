@@ -33,7 +33,7 @@ public class PurchaseRequest implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //it is managing the table IDENTITY
 	private int id;
 	@ManyToOne
-	@JoinColumn(name = "UserID")
+	@JoinColumn(name = "UserID") 
 	private User user; // User user, int userID
 	private String description;
 	private String justification;
@@ -48,9 +48,6 @@ public class PurchaseRequest implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
 	private Timestamp submittedDate;
 	private boolean isActive;
-	@ManyToOne
-	@JoinColumn(name ="UpdatedByUser")
-	private User updatedByUser = user;
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	//changed line 59 12-13-17 to uncomment
 	@JoinColumn(name = "PurchaseRequestID")//lowercase
@@ -99,11 +96,11 @@ public class PurchaseRequest implements Serializable {
 		this.id = id;
 	}
 
-	public User getUserID() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUserID(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
@@ -168,12 +165,6 @@ public class PurchaseRequest implements Serializable {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
-	}
-	public User getUpdatedByUser() {
-		return updatedByUser;
-	}
-	public void setUpdatedByUser(User updatedByUser) {
-		this.updatedByUser= updatedByUser;	
 	}
 	public List<PurchaseRequestLineItem> getPrLineItems() {
 		return prLineItems;
