@@ -3,6 +3,7 @@ package prs.domain.purchase;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -23,6 +25,7 @@ import prs.domain.status.Status;
 import prs.domain.user.User;
 
 @Entity
+@Table(name="purchaserequest")
 public class PurchaseRequest implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -31,7 +34,7 @@ public class PurchaseRequest implements Serializable {
 	private int id;
 	@ManyToOne
 	@JoinColumn(name = "UserID")
-	private User userID; // User user, int userID
+	private User user; // User user, int userID
 	private String description;
 	private String justification;
 	//////
@@ -47,11 +50,11 @@ public class PurchaseRequest implements Serializable {
 	private boolean isActive;
 	@ManyToOne
 	@JoinColumn(name ="UpdatedByUser")
-	private User updatedByUser = userID;
-	//@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private User updatedByUser = user;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	//changed line 59 12-13-17 to uncomment
 	@JoinColumn(name = "PurchaseRequestID")//lowercase
-	private ArrayList<PurchaseRequestLineItem> prLineItems;
+	private List<PurchaseRequestLineItem> prLineItems;
 
 
 	public PurchaseRequest() {
@@ -67,11 +70,11 @@ public class PurchaseRequest implements Serializable {
 		isActive = true;
 	}
 
-	public PurchaseRequest(int id,User userID,String description, String justification, String deliveryMode, Status status,
+	public PurchaseRequest(int id,User user,String description, String justification, String deliveryMode, Status status,
 			double total) { 
 		super();
 		this.id = id;
-		this.userID = userID;
+		this.user = user;
 		this.description = description;
 		this.justification = justification;
 		this.deliveryMode = deliveryMode;
@@ -97,11 +100,11 @@ public class PurchaseRequest implements Serializable {
 	}
 
 	public User getUserID() {
-		return userID;
+		return user;
 	}
 
 	public void setUserID(User user) {
-		this.userID = user;
+		this.user = user;
 	}
 
 	public String getDescription() {
@@ -172,17 +175,17 @@ public class PurchaseRequest implements Serializable {
 	public void setUpdatedByUser(User updatedByUser) {
 		this.updatedByUser= updatedByUser;	
 	}
-	public ArrayList<PurchaseRequestLineItem> getPrLineItems() {
+	public List<PurchaseRequestLineItem> getPrLineItems() {
 		return prLineItems;
 	}
 
-	public void setPrLineItems(ArrayList<PurchaseRequestLineItem> prLineItems) {
+	public void setPrLineItems(List<PurchaseRequestLineItem> prLineItems) {
 		this.prLineItems = prLineItems;
 	}
 
 	@Override
 	public String toString() {
-		return "\nUser: id = " + id + ", userID=" + userID + ", description = " + description + ", justification = "
+		return "\nUser: id = " + id + ", userID=" + user + ", description = " + description + ", justification = "
 				+ justification + ", " + "dateNeeded = " + dateNeeded + ", deliveryMode = " + deliveryMode
 				+ ", Status =" + status + "," + "total= " + total + ", submittedDate = " + submittedDate
 				+ "\n, prLineItems=" + prLineItems + "]";

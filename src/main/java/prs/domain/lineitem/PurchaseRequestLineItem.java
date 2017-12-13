@@ -12,25 +12,24 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import prs.domain.purchase.PurchaseRequest;
 
 @Entity
+@Table(name="purchaserequestlineitem")
 public class PurchaseRequestLineItem implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int quantity;
 	@Id
-	//GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	//may need to join a column here somehow
-	//private PurchaseRequest purchaseRequest;
-	@ManyToOne
-	@JoinColumn(name = "PurchaseRequestID")
-	//@JsonIgnore //added to ignore display of purchase request
-	private PurchaseRequest purchaserequest;
+
+	@Column(name = "purchaserequestid")
+	@JsonIgnore //added to ignore display of purchase request
+	private PurchaseRequest purchaseRequest;
 	@Column(name="productid")
 	private int productID;
 
@@ -40,19 +39,19 @@ public class PurchaseRequestLineItem implements Serializable {
 		quantity = 0;
 	}
 
-	public PurchaseRequestLineItem(int quantity, int id, PurchaseRequest purchaserequest, int productID) {
+	public PurchaseRequestLineItem(int quantity, int id, PurchaseRequest purchaseRequest, int productID) {
 		this.quantity = quantity;
 		this.id = id;
-		this.purchaserequest = purchaserequest;
+		this.purchaseRequest = purchaseRequest;
 		this.productID = productID;
 	}
-//	public PurchaseRequest getPurchaseRequest() {
-//		return purchaseRequest;
-//	}
-//
-//	public void setPurchaseRequest(PurchaseRequest purchaseRequest) {
-//		this.purchaseRequest = purchaseRequest;
-//	}
+	public PurchaseRequest getPurchaseRequest() {
+		return purchaseRequest;
+	}
+
+	public void setPurchaseRequest(PurchaseRequest purchaseRequest) {
+		this.purchaseRequest = purchaseRequest;
+	}
 	public int getQuantity() {
 		return quantity;
 	}
@@ -70,11 +69,11 @@ public class PurchaseRequestLineItem implements Serializable {
 	}
 
 	public PurchaseRequest getPurchaserequest() {
-		return purchaserequest;
+		return purchaseRequest;
 	}
 
-	public void setPurchaserequest(PurchaseRequest purchaserequest) {
-		this.purchaserequest = purchaserequest;
+	public void setPurchaserequest(PurchaseRequest purchaseRequest) {
+		this.purchaseRequest = purchaseRequest;
 	}
 
 	public int getProductID() {
@@ -87,7 +86,7 @@ public class PurchaseRequestLineItem implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\npurchaseRequestLineItem [id=" + id + ", purchaseRequestID=" + purchaserequest + ", productID="
+		return "\npurchaseRequestLineItem [id=" + id + ", purchaseRequestID=" + purchaseRequest + ", productID="
 				+ productID + ", quantity=" + quantity + "]";
 	}
 }
