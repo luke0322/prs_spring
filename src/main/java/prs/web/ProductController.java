@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import prs.domain.product.Product;
 import prs.domain.product.ProductRepository;
-import prs.domain.vendor.Vendor;
 
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/Products") // This means URL's start with /demo (after Application path)

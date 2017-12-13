@@ -24,6 +24,7 @@ public class VendorController {
 	public @ResponseBody Vendor addNewVendor (@RequestBody Vendor vendor) {
 		//@ResponseBody means the returned Vendor is the response,not a view name
 		//@RequestBody means it is a parameter from the POST request
+		//translates json into a java object
 		//vendor entity is going to transform JSON into instance of Vendor as vendor
 		//if you do not request body, your values will be null
         vendorRepository.save(vendor);
