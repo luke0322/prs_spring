@@ -29,7 +29,7 @@ public class PurchaseRequestLineItem implements Serializable {
 
 	@Column(name = "purchaserequestid")
 	@JsonIgnore //added to ignore display of purchase request
-	private PurchaseRequest purchaseRequest;
+	private int purchaseRequestID; //changed to int 12-13-17
 	@Column(name="productid")
 	private int productID;
 
@@ -39,18 +39,18 @@ public class PurchaseRequestLineItem implements Serializable {
 		quantity = 0;
 	}
 
-	public PurchaseRequestLineItem(int quantity, int id, PurchaseRequest purchaseRequest, int productID) {
+	public PurchaseRequestLineItem(int quantity, int id, int purchaseRequestID, int productID) {
 		this.quantity = quantity;
 		this.id = id;
-		this.purchaseRequest = purchaseRequest;
+		this.purchaseRequestID = purchaseRequestID;
 		this.productID = productID;
 	}
-	public PurchaseRequest getPurchaseRequest() {
-		return purchaseRequest;
+	public int getPurchaseRequest() {
+		return purchaseRequestID;
 	}
 
-	public void setPurchaseRequest(PurchaseRequest purchaseRequest) {
-		this.purchaseRequest = purchaseRequest;
+	public void setPurchaseRequest(int purchaseRequestID) {
+		this.purchaseRequestID = purchaseRequestID;
 	}
 	public int getQuantity() {
 		return quantity;
@@ -68,12 +68,12 @@ public class PurchaseRequestLineItem implements Serializable {
 		this.id = id;
 	}
 
-	public PurchaseRequest getPurchaserequest() {
-		return purchaseRequest;
+	public int getPurchaserequestID() {
+		return purchaseRequestID;
 	}
 
-	public void setPurchaserequest(PurchaseRequest purchaseRequest) {
-		this.purchaseRequest = purchaseRequest;
+	public void setPurchaserequestID(int purchaseRequestID) {
+		this.purchaseRequestID = purchaseRequestID;
 	}
 
 	public int getProductID() {
@@ -86,7 +86,7 @@ public class PurchaseRequestLineItem implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\npurchaseRequestLineItem [id=" + id + ", purchaseRequestID=" + purchaseRequest + ", productID="
+		return "\npurchaseRequestLineItem [id=" + id + ", purchaseRequestID=" + purchaseRequestID + ", productID="
 				+ productID + ", quantity=" + quantity + "]";
 	}
 }
