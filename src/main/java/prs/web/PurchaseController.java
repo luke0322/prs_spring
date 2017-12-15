@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import prs.domain.lineitem.PurchaseRequestLineItem;
 import prs.domain.product.Product;
 import prs.domain.purchase.PurchaseRepository;
 import prs.domain.purchase.PurchaseRequest;
+import prs.domain.status.Status;
+import prs.domain.user.User;
+import prs.util.PRSMaintenanceReturn;
 
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/PurchaseRequests") // This means URL's start with /demo (after Application path)
@@ -24,7 +28,7 @@ public class PurchaseController {
 	private PurchaseRepository purchaseRepository;
 
 	@PostMapping(path="/Add") // Map ONLY POST Requests, hidden from URL
-	public @ResponseBody PurchaseRequest addNewPurchaseRequest (@RequestBody PurchaseRequest purchaseRequest) {
+	public @ResponseBody PRSMaintenanceReturn addNewPurchaseRequest (@RequestBody PurchaseRequest purchaseRequest) {
 		//@ResponseBody means the returned Vendor is the response,not a view name
 		//@RequestBody means it is a parameter from the POST request
 		//vendor entity is going to transform JSON into instance of Vendor as vendor
@@ -33,9 +37,21 @@ public class PurchaseController {
         purchaseRequest.setSubmittedDate(ts);
         purchaseRepository.save(purchaseRequest);
         System.out.println("Purchase request saved:  "+purchaseRequest);
-        return purchaseRequest;
+        return PRSMaintenanceReturn.getMaintReturn(purchaseRequest);
 	}
-
+	
+	@PostMapping(path="/Change") // Map ONLY POST Requests, hidden from URL
+	public @ResponseBody PRSMaintenanceReturn changePurchaseRequest (@RequestBody PurchaseRequest purchaseRequest) {
+		//@ResponseBody means the returned Vendor is the response,not a view name
+		//@RequestBody means it is a parameter from the POST request
+		//vendor entity is going to transform JSON into instance of Vendor as vendor
+		//if you do not request body, your values will be null
+		//pass the id in as well to change the log of the user
+        purchaseRepository.save(purchaseRequest);
+        System.out.println("User saved:  "+purchaseRequest);
+        return PRSMaintenanceReturn.getMaintReturn(purchaseRequest);
+	}
+	
 	@GetMapping(path="/List") //currently products and vendors are linked
 	public @ResponseBody Iterable<PurchaseRequest> getAllProducts() {
 		// This returns a JSON or XML with the users
@@ -43,21 +59,29 @@ public class PurchaseController {
 	}
 	
     @GetMapping(path="/Get")
-    public @ResponseBody PurchaseRequest getProduct(@RequestParam int id) {
+    public @ResponseBody PurchaseRequest[] getProduct(@RequestParam int id) {
         PurchaseRequest pr = purchaseRepository.findOne(id);
-        return pr;//Get?id= enter id # here
+        return getReturnArray(pr);//Get?id= enter id # here
     }
     
-    @GetMapping(path="/Delete")
-    public @ResponseBody String deleteProduct(@RequestParam int id) {
-        String msg = "";
-        try {
-            purchaseRepository.delete(id);
-            msg = "PurchaseRequest " + id + " deleted";
-        } catch (EmptyResultDataAccessException exc) {
-            msg = "PurchaseRequest " + id + " doesn't exist...can't delete!";
-        }
-        return msg;
+    @GetMapping(path="/Delete") //change your delete  to match sean's
+    public @ResponseBody PRSMaintenanceReturn deletePurchaseRequest(@RequestParam int id) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		PurchaseRequest purchaseRequest = purchaseRepository.findOne(id);
+		purchaseRepository.delete(purchaseRequest);
+		return PRSMaintenanceReturn.getMaintReturn(purchaseRequest);
     }
+    
+	private PurchaseRequest[] getReturnArray(PurchaseRequest pr) {
+		PurchaseRequest[] returnArray;
+		if (pr == null) {
+			returnArray = new PurchaseRequest[0];
+		} else {
+			returnArray = new PurchaseRequest[1];
+			returnArray[0] = pr;
+		}
+		return returnArray;
+	}
 
 }

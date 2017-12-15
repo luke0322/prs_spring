@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import prs.domain.lineitem.PurchaseRequestLineItem;
+import prs.domain.user.User;
 import prs.domain.vendor.Vendor;
 import prs.domain.vendor.VendorRepository;
+import prs.util.PRSMaintenanceReturn;
 
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/Vendors") // This means URL's start with /demo (after Application path)
@@ -21,7 +24,7 @@ public class VendorController {
 	private VendorRepository vendorRepository;
 
 	@PostMapping(path="/Add") // Map ONLY POST Requests, hidden from URL
-	public @ResponseBody Vendor addNewVendor (@RequestBody Vendor vendor) {
+	public @ResponseBody PRSMaintenanceReturn addNewVendor (@RequestBody Vendor vendor) {
 		//@ResponseBody means the returned Vendor is the response,not a view name
 		//@RequestBody means it is a parameter from the POST request
 		//translates json into a java object
@@ -29,9 +32,21 @@ public class VendorController {
 		//if you do not request body, your values will be null
         vendorRepository.save(vendor);
         System.out.println("Vendor saved:  "+vendor);
-        return vendor;
+        return PRSMaintenanceReturn.getMaintReturn(vendor);
 	}
 
+	@PostMapping(path="/Change") // Map ONLY POST Requests, hidden from URL
+	public @ResponseBody PRSMaintenanceReturn changeVendor (@RequestBody Vendor vendor) {
+		//@ResponseBody means the returned Vendor is the response,not a view name
+		//@RequestBody means it is a parameter from the POST request
+		//vendor entity is going to transform JSON into instance of Vendor as vendor
+		//if you do not request body, your values will be null
+		//pass the id in as well to change the log of the vendor
+        vendorRepository.save(vendor);
+        System.out.println("User saved:  "+vendor);
+        return PRSMaintenanceReturn.getMaintReturn(vendor);
+	}
+	
 	@GetMapping(path="/List")
 	public @ResponseBody Iterable<Vendor> getAllVendors() {
 		// This returns a JSON or XML with the users
@@ -39,21 +54,29 @@ public class VendorController {
 	}
 	
     @GetMapping(path="/Get")
-    public @ResponseBody Vendor getVendor(@RequestParam int id) {
+    public @ResponseBody Vendor[] getVendor(@RequestParam int id) {
         Vendor v = vendorRepository.findOne(id);
-        return v;//Get?id= enter id # here
+        return getReturnArray(v);//Get?id= enter id # here
     }
     
-    @GetMapping(path="/Delete")
-    public @ResponseBody String deleteVendor(@RequestParam int id) {
-        String msg = "";
-        try {
-            vendorRepository.delete(id);
-            msg = "Vendor " + id + " deleted";
-        } catch (EmptyResultDataAccessException exc) {
-            msg = "Vendor " + id + " doesn't exist...can't delete!";
-        }
-        return msg;
+    @GetMapping(path="/Delete") //change your delete  to match sean's
+    public @ResponseBody PRSMaintenanceReturn deleteVendor(@RequestParam int id) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		Vendor vendor = vendorRepository.findOne(id);
+		vendorRepository.delete(vendor);
+		return PRSMaintenanceReturn.getMaintReturn(vendor);
     }
+    
+	private Vendor[] getReturnArray(Vendor v) {
+		Vendor[] returnArray;
+		if (v == null) {
+			returnArray = new Vendor[0];
+		} else {
+			returnArray = new Vendor[1];
+			returnArray[0] = v;
+		}
+		return returnArray;
+	}
 
 }

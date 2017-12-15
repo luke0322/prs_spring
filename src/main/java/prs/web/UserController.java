@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import prs.domain.product.Product;
 import prs.domain.user.User;
 import prs.domain.user.UserRepository;
-import prs.domain.vendor.Vendor;
+import prs.util.PRSMaintenanceReturn;
 
 
 @Controller    // This means that this class is a Controller
@@ -25,25 +24,37 @@ public class UserController {
 	private UserRepository userRepository;
 
 	@PostMapping(path="/Add") // Map ONLY POST Requests, hidden from URL
-	public @ResponseBody User addNewUser (@RequestBody User user) {
+	public @ResponseBody PRSMaintenanceReturn addNewUser (@RequestBody User user) { //instead of user, PRS Maintenace Return
 		//@ResponseBody means the returned Vendor is the response,not a view name
 		//@RequestBody means it is a parameter from the POST request
 		//vendor entity is going to transform JSON into instance of Vendor as vendor
 		//if you do not request body, your values will be null
         userRepository.save(user);
         System.out.println("User saved:  "+user);
-        return user;
+        return PRSMaintenanceReturn.getMaintReturn(user); //static method call
+        //displays "success, user added
+	}
+	@PostMapping(path="/Change") // Map ONLY POST Requests, hidden from URL
+	public @ResponseBody PRSMaintenanceReturn changeUser (@RequestBody User user) {
+		//@ResponseBody means the returned Vendor is the response,not a view name
+		//@RequestBody means it is a parameter from the POST request
+		//vendor entity is going to transform JSON into instance of Vendor as vendor
+		//if you do not request body, your values will be null
+		//pass the id in as well to change the log of the user
+        userRepository.save(user);
+        System.out.println("User saved:  "+user);
+        return PRSMaintenanceReturn.getMaintReturn(user);
 	}
 	
-//	@PostMapping(path="/Authenticate") // Map ONLY POST Requests, hidden from URL
-//	public @ResponseBody User authenticate(@RequestBody User user) {
-//		//@ResponseBody means the returned Vendor is the response,not a view name
-//		//@RequestBody means it is a parameter from the POST request
-//		//vendor entity is going to transform JSON into instance of Vendor as vendor
-//		//if you do not request body, your values will be null
-//        //User u =  
-//        return ;
-//	}
+	@GetMapping(path="/Authenticate") // Map ONLY GET Requests
+	public @ResponseBody User[] authenticate (@RequestParam String uname
+			, @RequestParam String pwd) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+
+		User u = userRepository.findByUserNameAndPassword(uname, pwd);
+		return getReturnArray(u);
+	}
 
 	@GetMapping(path="/List")
 	public @ResponseBody Iterable<User> getAllUsers() {
@@ -52,22 +63,30 @@ public class UserController {
 	}
 	
     @GetMapping(path="/Get")
-    public @ResponseBody User getUser(@RequestParam int id) {
+    public @ResponseBody User[] getUser(@RequestParam int id) {
         User u = userRepository.findOne(id);
-        return u;//Get?id= enter id # here
+        return getReturnArray(u);//Get?id= enter id # here
     }
     
-    @GetMapping(path="/Delete")
-    public @ResponseBody String deleteUser(@RequestParam int id) {
-        String msg = "";
-        try {
-            userRepository.delete(id);
-            msg = "User " + id + " deleted";
-        } catch (EmptyResultDataAccessException exc) {
-            msg = "User " + id + " doesn't exist...can't delete!";
-        }
-        return msg;
+    @GetMapping(path="/Delete") //change your delete  to match sean's
+    public @ResponseBody PRSMaintenanceReturn deleteUser(@RequestParam int id) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		User user = userRepository.findOne(id);
+		userRepository.delete(user);
+		return PRSMaintenanceReturn.getMaintReturn(user);
     }
+    
+	private User[] getReturnArray(User u) {
+		User[] returnArray;
+		if (u == null) {
+			returnArray = new User[0];
+		} else {
+			returnArray = new User[1];
+			returnArray[0] = u;
+		}
+		return returnArray;
+	}
 
 }
 

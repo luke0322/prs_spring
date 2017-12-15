@@ -10,8 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import prs.domain.lineitem.PurchaseRequestLineItem;
 import prs.domain.product.Product;
 import prs.domain.product.ProductRepository;
+import prs.domain.purchase.PurchaseRequest;
+import prs.domain.user.User;
+import prs.util.PRSMaintenanceReturn;
 
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/Products") // This means URL's start with /demo (after Application path)
@@ -21,16 +25,28 @@ public class ProductController {
 	private ProductRepository productRepository;
 
 	@PostMapping(path="/Add") // Map ONLY POST Requests, hidden from URL
-	public @ResponseBody Product addNewProduct (@RequestBody Product product) {
+	public @ResponseBody PRSMaintenanceReturn addNewProduct (@RequestBody Product product) {
 		//@ResponseBody means the returned Vendor is the response,not a view name
 		//@RequestBody means it is a parameter from the POST request
 		//vendor entity is going to transform JSON into instance of Vendor as vendor
 		//if you do not request body, your values will be null
         productRepository.save(product);
         System.out.println("Product saved:  "+product);
-        return product;
+        return PRSMaintenanceReturn.getMaintReturn(product);
 	}
 
+	@PostMapping(path="/Change") // Map ONLY POST Requests, hidden from URL
+	public @ResponseBody PRSMaintenanceReturn changeProduct (@RequestBody Product product) {
+		//@ResponseBody means the returned Vendor is the response,not a view name
+		//@RequestBody means it is a parameter from the POST request
+		//vendor entity is going to transform JSON into instance of Vendor as vendor
+		//if you do not request body, your values will be null
+		//pass the id in as well to change the log of the user
+        productRepository.save(product);
+        System.out.println("User saved:  "+product);
+        return PRSMaintenanceReturn.getMaintReturn(product);
+	}
+	
 	@GetMapping(path="/List") //currently products and vendors are linked
 	public @ResponseBody Iterable<Product> getAllProducts() {
 		// This returns a JSON or XML with the users
@@ -38,21 +54,29 @@ public class ProductController {
 	}
 	
     @GetMapping(path="/Get")
-    public @ResponseBody Product getProduct(@RequestParam int id) {
+    public @ResponseBody Product[] getProduct(@RequestParam int id) {
         Product p = productRepository.findOne(id);
-        return p;//Get?id= enter id # here
+        return getReturnArray(p);//Get?id= enter id # here
     }
     
-    @GetMapping(path="/Delete")
-    public @ResponseBody String deleteProduct(@RequestParam int id) {
-        String msg = "";
-        try {
-            productRepository.delete(id);
-            msg = "Product " + id + " deleted";
-        } catch (EmptyResultDataAccessException exc) {
-            msg = "Product " + id + " doesn't exist...can't delete!";
-        }
-        return msg;
+    @GetMapping(path="/Delete") //change your delete  to match sean's
+    public @ResponseBody PRSMaintenanceReturn deleteProduct(@RequestParam int id) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		Product product = productRepository.findOne(id);
+		productRepository.delete(product);
+		return PRSMaintenanceReturn.getMaintReturn(product);
     }
+    
+	private Product[] getReturnArray(Product p) {
+		Product[] returnArray;
+		if (p == null) {
+			returnArray = new Product[0];
+		} else {
+			returnArray = new Product[1];
+			returnArray[0] = p;
+		}
+		return returnArray;
+	}
 
 }

@@ -45,11 +45,11 @@ public class PurchaseRequestLineItem implements Serializable {
 		this.purchaseRequestID = purchaseRequestID;
 		this.productID = productID;
 	}
-	public int getPurchaseRequest() {
+	public int getPurchaseRequestID() {
 		return purchaseRequestID;
 	}
 
-	public void setPurchaseRequest(int purchaseRequestID) {
+	public void setPurchaseRequestID(int purchaseRequestID) {
 		this.purchaseRequestID = purchaseRequestID;
 	}
 	public int getQuantity() {
@@ -66,14 +66,6 @@ public class PurchaseRequestLineItem implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getPurchaserequestID() {
-		return purchaseRequestID;
-	}
-
-	public void setPurchaserequestID(int purchaseRequestID) {
-		this.purchaseRequestID = purchaseRequestID;
 	}
 
 	public int getProductID() {

@@ -14,6 +14,7 @@ import prs.domain.status.Status;
 import prs.domain.status.StatusRepository;
 import prs.domain.user.User;
 import prs.domain.vendor.Vendor;
+import prs.util.PRSMaintenanceReturn;
 
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/Status") // This means URL's start with /demo (after Application path)
@@ -23,14 +24,26 @@ public class StatusController {
 	private StatusRepository statusRepository;
 
 	@PostMapping(path="/Add") // Map ONLY POST Requests, hidden from URL
-	public @ResponseBody Status addNewStatus (@RequestBody Status status) {
+	public @ResponseBody PRSMaintenanceReturn addNewStatus (@RequestBody Status status) {
 		//@ResponseBody means the returned Vendor is the response,not a view name
 		//@RequestBody means it is a parameter from the POST request
 		//vendor entity is going to transform JSON into instance of Vendor as vendor
 		//if you do not request body, your values will be null
         statusRepository.save(status);
         System.out.println("Status saved:  "+status);
-        return status;
+        return PRSMaintenanceReturn.getMaintReturn(status);
+	}
+	
+	@PostMapping(path="/Change") // Map ONLY POST Requests, hidden from URL
+	public @ResponseBody PRSMaintenanceReturn changeUser (@RequestBody Status status) {
+		//@ResponseBody means the returned Vendor is the response,not a view name
+		//@RequestBody means it is a parameter from the POST request
+		//vendor entity is going to transform JSON into instance of Vendor as vendor
+		//if you do not request body, your values will be null
+		//pass the id in as well to change the log of the user
+        statusRepository.save(status);
+        System.out.println("Status saved:  "+status);
+        return PRSMaintenanceReturn.getMaintReturn(status);
 	}
 
 	@GetMapping(path="/List") //currently products and vendors are linked
@@ -40,21 +53,29 @@ public class StatusController {
 	}
 	
     @GetMapping(path="/Get")
-    public @ResponseBody Status getStatus(@RequestParam int id) {
+    public @ResponseBody Status[] getStatus(@RequestParam int id) {
         Status s = statusRepository.findOne(id);
-        return s;//Get?id= enter id # here
+        return getReturnArray(s);//Get?id= enter id # here
     }
     
-    @GetMapping(path="/Delete")
-    public @ResponseBody String deleteProduct(@RequestParam int id) {
-        String msg = "";
-        try {
-            statusRepository.delete(id);
-            msg = "Status " + id + " deleted";
-        } catch (EmptyResultDataAccessException exc) {
-            msg = "Status " + id + " doesn't exist...can't delete!";
-        }
-        return msg;
+    @GetMapping(path="/Delete") //change your delete  to match sean's
+    public @ResponseBody PRSMaintenanceReturn deleteUser(@RequestParam int id) {
+		// @ResponseBody means the returned String is the response, not a view name
+		// @RequestParam means it is a parameter from the GET or POST request
+		Status status = statusRepository.findOne(id);
+		statusRepository.delete(status);
+		return PRSMaintenanceReturn.getMaintReturn(status);
     }
+    
+	private Status[] getReturnArray(Status s) {
+		Status[] returnArray;
+		if (s == null) {
+			returnArray = new Status[0];
+		} else {
+			returnArray = new Status[1];
+			returnArray[0] = s;
+		}
+		return returnArray;
+	}
 
 }
