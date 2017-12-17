@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import prs.domain.lineitem.PurchaseRequestLineItem;
 import prs.domain.product.Product;
 import prs.domain.product.ProductRepository;
+import prs.domain.product.ProductSummary;
 import prs.domain.purchase.PurchaseRequest;
+import prs.domain.purchase.PurchaseRequestSummary;
 import prs.domain.user.User;
 import prs.util.PRSMaintenanceReturn;
 
@@ -55,6 +57,16 @@ public class ProductController extends BaseController{
 		return productRepository.findAll();
 	}
 	
+	@GetMapping(path="/Summary")
+	public @ResponseBody List<ProductSummary> getProductSummary(@RequestParam int id) {
+	 // This returns a JSON or XML with the users
+		ProductSummary prs = new ProductSummary();
+		Product pr = productRepository.findOne(id);
+		prs.setProduct(pr);
+		List<Product> product = productRepository.findAllByProductId(pr.getId());
+		//prs.setProduct(product); //we need to add in vendor here
+	 		return getReturnArray(prs);
+	 		}
     @GetMapping(path="/Get")
     public @ResponseBody List<Product> getProduct(@RequestParam int id) {
         Product p = productRepository.findOne(id);
