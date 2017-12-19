@@ -19,24 +19,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import prs.domain.purchase.PurchaseRequest;
 
 @Entity
-@Table(name="purchaserequestlineitem")
 public class PurchaseRequestLineItem implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int quantity;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
-	@Column(name = "purchaserequestid")
-	@JsonIgnore //added to ignore display of purchase request
+	private int quantity;
 	private int purchaseRequestID; //changed to int 12-13-17
-	@Column(name="productid")
 	private int productID;
 
 	public PurchaseRequestLineItem() {
 		id = 0;
 		productID = 0;
 		quantity = 0;
+		purchaseRequestID = 0;
 	}
 
 	public PurchaseRequestLineItem(int quantity, int id, int purchaseRequestID, int productID) {

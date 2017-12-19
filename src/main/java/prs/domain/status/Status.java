@@ -10,7 +10,8 @@ public class Status {
 	private String description;
 	
 	public Status() {
-		this.description = "";
+		id =0;
+		description = "";
 	}
 	public Status(int id, String description) {
 		this.id = id;

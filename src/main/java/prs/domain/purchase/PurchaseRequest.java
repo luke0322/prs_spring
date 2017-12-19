@@ -32,59 +32,47 @@ public class PurchaseRequest implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //it is managing the table IDENTITY
 	private int id;
-	@ManyToOne
-	@JoinColumn(name = "UserID") 
-	private User user; // User user, int userID
+	private int userID; // User user, int userID
 	private String description;
 	private String justification;
 	//////
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
 	private Timestamp dateNeeded;
 	private String deliveryMode;
-	@ManyToOne
-	@JoinColumn(name="statusID")
-	private Status status;
+	private int statusID;
 	private double total;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS")
 	private Timestamp submittedDate;
-	private boolean isActive;
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	//changed line 59 12-13-17 to uncomment
-	@JoinColumn(name = "PurchaseRequestID")//lowercase
-	private List<PurchaseRequestLineItem> prLineItems;
 
 
 	public PurchaseRequest() {
 		id = 0;
 		description = "";
-		status = null;
+		statusID = 0;
 		total = 0.0;
 		submittedDate = null;
-		prLineItems = new ArrayList<>();
 		justification = "";
 		deliveryMode = "";
 		dateNeeded = null;
-		isActive = true;
 	}
 
-	public PurchaseRequest(int id,User user,String description, String justification, String deliveryMode, Status status,
+	public PurchaseRequest(int id,int userID,String description, String justification, String deliveryMode, int statusID,
 			double total) { 
 		super();
 		this.id = id;
-		this.user = user;
+		this.userID = userID;
 		this.description = description;
 		this.justification = justification;
 		this.deliveryMode = deliveryMode;
-		this.status = status;
+		this.statusID = statusID;
 		this.total = total;
-		prLineItems = new ArrayList<PurchaseRequestLineItem>();
 	}
-	public PurchaseRequest(String description, String justification, String deliveryMode, Status status,
+	public PurchaseRequest(String description, String justification, String deliveryMode, int statusID,
 			double total) { 
 		setDescription(description);
 		setJustification(justification);
 		setDeliveryMode(deliveryMode);
-		setStatus(status);
+		setStatusID(statusID);
 		setTotal(total);
 	}
 	
@@ -96,12 +84,12 @@ public class PurchaseRequest implements Serializable {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public int getUser() {
+		return userID;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setUser(int userID) {
+		this.userID = userID;
 	}
 
 	public String getDescription() {
@@ -135,12 +123,12 @@ public class PurchaseRequest implements Serializable {
 		this.deliveryMode = deliveryMode;
 	}
 
-	public Status getStatus() {
-		return status;
+	public int getStatusID() {
+		return statusID;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setStatusID(int statusID) {
+		this.statusID = statusID;
 	}
 
 	public double getTotal() {
@@ -159,27 +147,12 @@ public class PurchaseRequest implements Serializable {
 		this.submittedDate = submittedDate;
 	}
 
-	public boolean isActive() {
-		return isActive;
-	}
-
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
-	public List<PurchaseRequestLineItem> getPrLineItems() {
-		return prLineItems;
-	}
-
-	public void setPrLineItems(List<PurchaseRequestLineItem> prLineItems) {
-		this.prLineItems = prLineItems;
-	}
-
 	@Override
 	public String toString() {
-		return "\nUser: id = " + id + ", userID=" + user + ", description = " + description + ", justification = "
+		return "\nUser: id = " + id + ", userID=" + userID + ", description = " + description + ", justification = "
 				+ justification + ", " + "dateNeeded = " + dateNeeded + ", deliveryMode = " + deliveryMode
-				+ ", Status =" + status + "," + "total= " + total + ", submittedDate = " + submittedDate
-				+ "\n, prLineItems=" + prLineItems + "]";
+				+ ", Status =" + statusID + "," + "total= " + total + ", submittedDate = " + submittedDate
+				+ "\n, prLineItems=" + "]";
 
 	}
 

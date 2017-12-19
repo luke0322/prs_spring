@@ -21,34 +21,27 @@ public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@ManyToOne
-	@JoinColumn(name = "VendorID")
-	private Vendor vendor;
-	@JsonProperty("PartNumber")
+	private int vendorID;
 	private String partNumber;
-	@JsonProperty("Name")
 	private String name;
-	@JsonProperty("Price")
 	private double price;
-	@JsonProperty("Unit")
 	private String unit;
-	@JsonProperty("PhotoPath")
 	private String photoPath;
 	
 	public Product() {
 		id = 0;
-		vendor = null;
+		vendorID = 0;
 		partNumber = "";
 		name = "";
 		price = 0.0;
 		unit = "";
 		photoPath = "";
 	}
-	public Product(int id, Vendor vendor, String partNumber, String name, double price, String unit,
+	public Product(int id, int vendorID, String partNumber, String name, double price, String unit,
 			String photoPath) {
 		super();
 		this.id = id;
-		this.vendor = vendor;
+		this.vendorID = vendorID;
 		this.partNumber = partNumber;
 		this.name = name;
 		this.price = price;
@@ -61,11 +54,11 @@ public class Product implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Vendor getVendor() {
-		return vendor;
+	public int getVendor() {
+		return vendorID;
 	}
-	public void setVendor(Vendor vendor) {
-		this.vendor = vendor;
+	public void setVendor(int vendorID) {
+		this.vendorID = vendorID;
 	}
 	public String getPartNumber() {
 		return partNumber;
@@ -99,7 +92,7 @@ public class Product implements Serializable{
 	}
 @Override
 public String toString() {
-	return "id = "+id+", Vendor ID = "+vendor+", Part Number = "+partNumber+", "+
+	return "id = "+id+", Vendor ID = "+vendorID+", Part Number = "+partNumber+", "+
 			"name = "+name+", price = "+price+", Unit ="+unit+","+"Photo Path= "
 			+photoPath;
 	}

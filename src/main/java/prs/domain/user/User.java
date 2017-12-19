@@ -42,9 +42,6 @@ public class User implements Serializable {
 	private boolean reviewer;
 	@Column(name = "isadmin")
 	private boolean admin;
-	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnore //ignores the display of the product list
-	private List<PurchaseRequest> purchaseRequest;
 	
 	public User() {
 		userName = "";
@@ -131,14 +128,6 @@ public class User implements Serializable {
 	}
 	public void setAdmin(boolean inAdmin) {
 		this.admin = inAdmin;
-	}
-
-	public List<PurchaseRequest> getPurchaseRequest() {
-		return purchaseRequest;
-	}
-
-	public void setPurchaseRequest(List<PurchaseRequest> purchaseRequest) {
-		this.purchaseRequest = purchaseRequest;
 	}
 
 	@Override

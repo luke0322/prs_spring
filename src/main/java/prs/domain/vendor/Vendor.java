@@ -25,28 +25,16 @@ public class Vendor implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@JsonProperty("Code")
 	private String code;
-	@JsonProperty("Name")
 	private String name;
-	@JsonProperty("Address")
 	private String address;
-	@JsonProperty("City")
 	private String city;
-	@JsonProperty("State")
 	private String state;
-	@JsonProperty("Zip")
 	private String zip;
-	@JsonProperty("Phone")
 	private String phone;
-	@JsonProperty("Email")
 	private String email;
 	@Column(name= "ispreapproved")
-	@JsonProperty("IsPreApproved")
 	private boolean preapproved;
-	@OneToMany(mappedBy="vendor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JsonIgnore //ignores the display of the product list
-	private List<Product> products;
 	
 	
 	public Vendor(String code, String name, String address, String city, String state, String zip, String phone,
@@ -65,12 +53,6 @@ public class Vendor implements Serializable {
 
 	public Vendor() {
 		
-	}
-	public List<Product> getProducts() {
-		return products;
-	}
-	public void setProducts(List<Product> products) {
-		this.products = products;
 	}
 	public int getId() {
 		return id;
