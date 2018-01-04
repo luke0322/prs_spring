@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
 import prs.domain.product.Product;
 
 public interface VendorRepository extends CrudRepository<Vendor, Integer> {
-	List<Product> findAllByVendorID(int id);
+	//List<Product> findAllByVendorID(int vendorID);
 }

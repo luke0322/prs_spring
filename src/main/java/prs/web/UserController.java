@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +18,7 @@ import prs.domain.user.User;
 import prs.domain.user.UserRepository;
 import prs.util.PRSMaintenanceReturn;
 
-
+@CrossOrigin
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/Users") // This means URL's start with /demo (after Application path)
 public class UserController extends BaseController {

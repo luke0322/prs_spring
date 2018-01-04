@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ import prs.domain.purchase.PurchaseRequestSummary;
 import prs.domain.status.Status;
 import prs.domain.user.User;
 import prs.util.PRSMaintenanceReturn;
-
+@CrossOrigin
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/PurchaseRequests") // This means URL's start with /demo (after Application path)
 public class PurchaseController extends BaseController {
@@ -68,7 +69,7 @@ public class PurchaseController extends BaseController {
 		PurchaseRequestSummary prs = new PurchaseRequestSummary();
 		PurchaseRequest pr = purchaseRepository.findOne(id);
 		prs.setPurchaseRequest(pr);
-		List<PurchaseRequestLineItem> prlis = lineItemRepository.findAllByPurchaseRequestId(pr.getId());
+		List<PurchaseRequestLineItem> prlis = lineItemRepository.findAllByPurchaseRequestID(pr.getId());
 		prs.setLineItems(prlis);
 	 		return getReturnArray(prs);
 	 		}

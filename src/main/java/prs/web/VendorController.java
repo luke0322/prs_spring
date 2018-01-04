@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ import prs.domain.vendor.Vendor;
 import prs.domain.vendor.VendorRepository;
 import prs.domain.vendor.VendorSummary;
 import prs.util.PRSMaintenanceReturn;
-
+@CrossOrigin
 @Controller    // This means that this class is a Controller
 @RequestMapping(path="/Vendors") // This means URL's start with /demo (after Application path)
 public class VendorController extends BaseController {
@@ -38,6 +39,7 @@ public class VendorController extends BaseController {
 		//translates json into a java object
 		//vendor entity is going to transform JSON into instance of Vendor as vendor
 		//if you do not request body, your values will be null
+		System.out.println("this works");
         vendorRepository.save(vendor);
         System.out.println("Vendor saved:  "+vendor);
         return PRSMaintenanceReturn.getMaintReturn(vendor);
@@ -61,15 +63,17 @@ public class VendorController extends BaseController {
 		return vendorRepository.findAll();
 	}
 	
-	@GetMapping(path="/Summary")
-	public  @ResponseBody List<VendorSummary> getVendorSummary (@RequestParam int id){
-		VendorSummary vs = new VendorSummary();
-		Vendor vendor = vendorRepository.findOne(id);
-		vs.setVendor(vendor);
-		List <Product> products = productRepository.findAllByVendorId(vendor.getId());
-		vs.setProducts(products);
-		return getReturnArray(vs);
-	}
+//	@GetMapping(path="/Summary")
+//	public  @ResponseBody List<VendorSummary> getVendorSummary (@RequestParam int vendorID){
+//		VendorSummary vs = new VendorSummary();
+//		Vendor vendor = vendorRepository.findOne(vendorID);
+//		vs.setVendor(vendor);
+//		List <Product> products = productRepository.findAllByVendorID(vendor.getId());
+//		vs.setProducts(products);
+//		return getReturnArray(vs);
+//	}
+	
+	//findAllByVendorID error here, check product summary
     
 	
 	@GetMapping(path="/Get")
